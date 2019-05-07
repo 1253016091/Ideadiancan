@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//-//mybatis.org//DT//DTD Mapper 3.0//EN"  "mybatis-3-mapper.dtd">
+<mapper namespace="cn.bzxy.diancan.mapper.ProductCategoryMapper">
+    <!--根据给定的店铺编号获取当前店铺的所有分类信息-->
+    <select id="selectProductCategoriesByShoppingId" resultType="ProductCategory">
+        select categoryId,categoryName,categoryParent,shoppingId,createTime,updateTime,status from product_category
+        where shoppingid=#{shopid}
+    </select>
+    <!--在商品分类中添加一条记录-->
+    <insert id="insertProductCategory" parameterType="ProductCategory">
+        insert into
+        product_category(categoryName,categoryParent,shoppingId,createTime,updateTime,status)values(#{categoryName}
+        ,#{categoryParent},#{shoppingId},#{createTime},#{updateTime},#{status})
+    </insert>
+    <!--在商品中分类表中修改一条记录-->
+    <update id="updateProductCategory" parameterType="ProductCategory">
+        update product_category
+        <set>
+            <if test="categoryName!=null and categoryName!=''">
+                categoryName=#{categoryName},
+            </if>
+            <if test="categoryParent!=null">
+                categoryParent=#{categoryParent},
+            </if>
+            <if test="shoppingId!=null">
+                shoppingId=#{shoppingId},
+            </if>
+            <if test="createTime!=null and createTime!=''">
+                createTime=#{createTime},
+            </if>
+            <if test="updateTime!=null and updateTime!=''">
+                updateTime=#{updateTime},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+        </set>
+        where categoryId=#{categoryId}
+    </update>
+    <!--根据商品分类编号获取商品分类信息-->
+    <select id="selectProductCategoriesById" resultType="ProductCategory">
+        select categoryId,categoryName,categoryParent,shoppingId,createTime,updateTime,status from product_category
+        where categoryid=#{categoryId}
+    </select>
+    <!--分页显示商品分类信息-->
+    <select id="selectProductCategoriesByPage" resultType="ProductCategory">
+        select categoryId,categoryName,categoryParent,shoppingId,createTime,updateTime,status from product_category
+        order by createdTime desc limit #{startPos},#{pageSize}
+    </select>
+
+</mapper>
